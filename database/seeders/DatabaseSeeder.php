@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        DB::table('services')->truncate();
+        DB::table('customers')->truncate();
+
         $this->call(ServiceSeeder::class);
+        $this->call(CustomerSeeder::class);
     }
 }
