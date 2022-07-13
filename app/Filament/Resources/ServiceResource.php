@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -23,10 +24,12 @@ class ServiceResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('price')
                     ->required(),
-                Forms\Components\TextInput::make('price')->required(),
-                Forms\Components\RichEditor::make('description')->columnSpan(2),
+                Forms\Components\RichEditor::make('description')
+                    ->columnSpan(2),
             ]);
     }
 
@@ -37,7 +40,17 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd', true),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+
+                        if (strlen($state) <= $column->getLimit()) {
+                            return null;
+                        }
+
+                        return $state;
+                    }),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
