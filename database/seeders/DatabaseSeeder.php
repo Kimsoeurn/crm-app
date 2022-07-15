@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
+        DB::getSchemaBuilder()->disableForeignKeyConstraints();
         DB::table('services')->truncate();
         DB::table('customers')->truncate();
 

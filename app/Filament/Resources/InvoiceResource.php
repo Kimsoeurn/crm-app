@@ -23,18 +23,23 @@ class InvoiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('customer_id')
-                    ->required()
-                    ->relationship('customer', 'name'),
-                Forms\Components\TextInput::make('invoice_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('bill_date')
-                    ->required(),
-                Forms\Components\DatePicker::make('due_date')
-                    ->required(),
-                Forms\Components\DatePicker::make('expired_date'),
-                Forms\Components\TextInput::make('total')->disabled(),
+               Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\Select::make('customer_id')
+                        ->required()
+                        ->relationship('customer', 'name'),
+                    Forms\Components\TextInput::make('invoice_number')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('bill_date')
+                        ->required(),
+                    Forms\Components\DatePicker::make('due_date')
+                        ->required(),
+                    Forms\Components\DatePicker::make('expired_date'),
+                    Forms\Components\TextInput::make('total')
+                        ->reactive()
+                        ->disabled(),
+                ])->columns(2)
             ]);
     }
 
@@ -70,7 +75,7 @@ class InvoiceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\InvoiceDetailsRelationManager::class
         ];
     }
 
