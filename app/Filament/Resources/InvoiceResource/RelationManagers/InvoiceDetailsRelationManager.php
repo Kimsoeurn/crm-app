@@ -9,7 +9,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
-use Livewire\Component as Livewire;
 
 class InvoiceDetailsRelationManager extends RelationManager
 {
@@ -48,22 +47,18 @@ class InvoiceDetailsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()->after(function (Model $record) {
-                    $record->invoice->updateTotal();
+                Tables\Actions\CreateAction::make()->after(function (Model $record, $livewire) {
+                    $livewire->emit('update-total', $record->invoice->updateTotal());
                 }),
-                Tables\Actions\Action::make('Print')
-                    ->url(route('dashboard'), true)
+                Tables\Actions\Action::make('Print')->action(fn ($livewire) => $livewire->emit('update-total')),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->after(function (Model $record) {
-                    $record->invoice->updateTotal();
+                Tables\Actions\EditAction::make()->after(function (Model $record, $livewire) {
+                    $livewire->emit('update-total', $record->invoice->updateTotal());
                 }),
-                Tables\Actions\DeleteAction::make()->after(function (Model $record) {
-                    $record->invoice->updateTotal();
+                Tables\Actions\DeleteAction::make()->after(function (Model $record, $livewire) {
+                    $livewire->emit('update-total', $record->invoice->updateTotal());
                 }),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

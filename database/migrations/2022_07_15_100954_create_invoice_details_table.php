@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->integer('qty')->nullable();
             $table->float('price', 11, 2)->nullable();
             $table->float('discount', 11, 2)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

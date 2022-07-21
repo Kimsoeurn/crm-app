@@ -23,7 +23,7 @@ class Invoice extends Model
         return $this->hasMany(InvoiceDetail::class, 'invoice_id');
     }
 
-    public function updateTotal()
+    public function updateTotal(): static
     {
         $total = 0;
 
@@ -33,5 +33,7 @@ class Invoice extends Model
 
         $this->total = $total;
         $this->save();
+
+        return $this;
     }
 }
